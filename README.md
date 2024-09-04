@@ -8,17 +8,17 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 
-##to run the project 
-#clone using ssh 
+## to run the project 
+# clone using ssh 
 git clone git@github.com:JenanMagdi/LMS.git
 
-#install using npm
+# install using npm
 npm install 
-#or you can just do it t=like this 
+# or you can just do it t=like this 
 npm i
 
-#you now can use the app 
+# you now can use the app 
 
-#when you run the app write
+# when you run the app write
 
 npm run dev 
