@@ -31,10 +31,11 @@ const SideBar = () => {
         Assignments
         </li>
         <li onClick={() => navigate("/")}>
-        <FontAwesomeIcon icon={faCommentsQuestionCheck} />          quizes
+        <FontAwesomeIcon icon={faCommentsQuestionCheck} />          
+        quizes
         </li>
       </div>
-      <div className=" list-none mt-auto align-text-bottom *:cursor-pointer">
+      <div className=" list-none flex flex-col h-96 pb-10 justify-end *:cursor-pointer">
         <li
           onClick={() => navigate("/")}
           className=" pl-3 *:pr-2 text-geant-gray-600 mb-1"
