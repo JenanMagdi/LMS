@@ -36,7 +36,10 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faGear} />
         </li>
     <div className="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-00 rounded-full border-2 border-gray-100 hover:border-gray-300 ">
-    <Avatar onClick={()=>logout()} className="rounded" img={loggedInUser?.photoURL}    
+    <Avatar 
+    onClick={()=>logout()} 
+    className="rounded"
+     img={loggedInUser?.photoURL}   
      />
     </div></div>
   </ul>

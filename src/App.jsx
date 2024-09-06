@@ -5,8 +5,7 @@ import Router from './Router/Router';
 
 function App() {
   return (
-    <div className=" font-roboto bg-gray-50 ">
-              
+    <div className=" font-roboto bg-gray-50 ">       
     <NavBar/>
       <div className="flex ">
       <div className=""><SideBar /></div> 

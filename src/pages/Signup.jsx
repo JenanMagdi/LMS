@@ -1,3 +1,16 @@
+const Signup = () => {
+  return (
+    <div>
+      Signup
+    </div>
+  )
+}
+
+export default Signup
+
+
+
+
 // // const Signup = () => {
 // //     return (
 // //       <div className="flex justify-center items-center min-h-screen">

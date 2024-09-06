@@ -3,7 +3,8 @@ import {
   faCommentsQuestionCheck,
   faGear,
   faHome,
-  faMemoCircleCheck
+  faMemoCircleCheck,
+  faNote
 } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChalkboardUser } from "@fortawesome/sharp-light-svg-icons";
@@ -18,22 +19,27 @@ const SideBar = () => {
     <div className="  bg-white h-full px-3  flex flex-col ">
       <p className="font-bold text-md text-geant-gray-400 p-3 ">EduConnect</p>
       <div className="pr-5 *:cursor-pointer flex flex-col text-md gap-y-3 *:text-geant-gray-600 *:list-none hover:*:bg-geant-primary-25 hover:*:rounded-lg *:*:pr-3 *:py-1.5 *:pl-3">
-        <li onClick={() => navigate("/")} className="pr-16 ">
+        <li onClick={() => navigate("/home")} className="pr-16 ">
           <FontAwesomeIcon icon={faHome} />
           Home
         </li>
-        <li onClick={() => navigate("/")}>
+        <li onClick={() => navigate("/classes")}>
         <FontAwesomeIcon icon={faChalkboardUser } />          
         Classes
         </li>
-        <li onClick={() => navigate("/")}>
+        <li onClick={() => navigate("/homeworks")}>
+        <FontAwesomeIcon icon={faNote} />          
+        Homeworks
+        </li>
+        <li onClick={() => navigate("/assignments")}>
         <FontAwesomeIcon icon={faMemoCircleCheck} />        
         Assignments
         </li>
-        <li onClick={() => navigate("/")}>
+        <li onClick={() => navigate("/quizes")}>
         <FontAwesomeIcon icon={faCommentsQuestionCheck} />          
-        quizes
+        Quizes
         </li>
+      
       </div>
       <div className=" list-none flex flex-col h-96 pb-10 justify-end *:cursor-pointer">
         <li
