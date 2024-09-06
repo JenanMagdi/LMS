@@ -14,11 +14,15 @@ const firebaseConfig = {
   measurementId: "G-EKHGHMVXQ3"
 };
 
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 export { app, auth, db, provider, storage };
 

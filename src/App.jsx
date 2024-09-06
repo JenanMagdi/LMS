@@ -5,11 +5,12 @@ import Router from './Router/Router';
 
 function App() {
   return (
-    <div className=" font-roboto bg-gray-50 ">          
+    <div className=" font-roboto bg-gray-50 ">
+              
     <NavBar/>
       <div className="flex ">
-      <div className=" "><SideBar /></div> 
-      <div className=" flex-1 m-8 "><Router /></div> 
+      <div className=""><SideBar /></div> 
+      <div className="flex-1 m-5"><Router /></div> 
       </div>   
     </div>
   );

@@ -25,5 +25,10 @@ export default defineConfig({
   optimizeDeps: {
     include: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
   },
+  server: {
+    proxy: {
+      '/api': 'https://lmsystem-27bd8.firebaseapp.com',
+    },
+  },
 });
 

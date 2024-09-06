@@ -5,6 +5,7 @@ import { CustomUseContext } from "../context/context";
 const AddButton = () => {
   const { createClassDialog, setCreateClassDialog } = CustomUseContext();
   const { joinClassDialog, setJoinClassDialog } = CustomUseContext();
+
   return (
     <div className="fixed top-16 right-6 group ">
       <button

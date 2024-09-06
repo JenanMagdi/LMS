@@ -1,7 +1,7 @@
 import AddButton from '../components/AddButton';
 import { CourseCard } from '../components/CourseCard';
-import CreateClass from './CreateClass';
-import JoinClass from './JoinClass';
+import CreateClass from '../components/CreateClass';
+import JoinClass from '../components/JoinClass';
 
 const Home = () => {
     return (

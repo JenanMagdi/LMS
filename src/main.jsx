@@ -6,11 +6,10 @@ import { ContextProvider } from './context/context.jsx';
 import './index.css';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-  <ContextProvider>
   <BrowserRouter>
-  <App />
-  </BrowserRouter>
-  </ContextProvider>        
+  <ContextProvider>
+  <App /></ContextProvider>   
+  </BrowserRouter> 
   </StrictMode>
 )
 

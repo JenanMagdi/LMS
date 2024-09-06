@@ -1,8 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear, faScreenUsers } from "@fortawesome/sharp-light-svg-icons";
 import { Avatar } from "flowbite-react";
+import { CustomUseContext } from "../context/context";
 
 const NavBar = () => {
+  const { loggedInUser , logout} = CustomUseContext();
 
   return (
 <div className='mx-1 mt-0.5 bg-gray-50 '>
@@ -34,7 +36,8 @@ const NavBar = () => {
           <FontAwesomeIcon icon={faGear} />
         </li>
     <div className="relative inline-flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-00 rounded-full border-2 border-gray-100 hover:border-gray-300 ">
-    <Avatar className="rounded"/>
+    <Avatar onClick={()=>logout()} className="rounded" img={loggedInUser?.photoURL}    
+     />
     </div></div>
   </ul>
 </div>

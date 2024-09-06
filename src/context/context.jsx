@@ -1,6 +1,9 @@
 /* eslint-disable react/prop-types */
+import { signInWithPopup } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth, provider } from '../lib/Firebase';
+
 const AddContext = createContext();
 
 export function CustomUseContext() {
@@ -10,28 +13,73 @@ export function CustomUseContext() {
 export function ContextProvider({ children }) {
     const [createClassDialog, setCreateClassDialog] = useState(false);
     const [joinClassDialog, setJoinClassDialog] = useState(false);
-    const [logInUser, setLogInUser] = useState(null);
+    const [loggedInUser, setLoggedInUser] = useState(null);
     const [loggedInMail, setLoggedInMail] = useState(null);
+    const navigate = useNavigate();
 
-    const login = () => {
-        auth.signInWithPopup(provider);
+    // const login = () => {
+    //     auth.signInWithPopup(provider);
+
+    // };
+const login = () => {
+    signInWithPopup(auth, provider)
+        .then((result) => {
+            setLoggedInUser(result.user);
+            setLoggedInMail(result.user.email);
+            navigate('/home');
+        })
+        .catch((error) => {
+            console.error("Login failed:", error.message);
+        });
+};
+
+    
+    const logout = () => {
+        auth.signOut()
+            .then(() => {
+                setLoggedInMail(null);
+                setLoggedInUser(null);
+                navigate("/notfound")
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
+    
+    // useEffect(() => {
+    //     if (loggedInUser || loggedInMail) {
+    //         console.log("User logged in:", loggedInUser);
+    //         console.log("User email:", loggedInMail);
+    //     }else 
+    //     {
+    //         console.log("User logged out");
+    //     }
+    // }, [loggedInUser, loggedInMail]);
+
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
             if (authUser) {
-                setLoggedInMail(authUser.email);
-                setLogInUser(authUser);
+                if (loggedInUser?.uid !== authUser.uid) {
+                    setLoggedInMail(authUser.email);
+                    setLoggedInUser(authUser);
+                    console.log("User logged in:", authUser);
+                    console.log("User email:", authUser.email);
+                }
             } else {
-                setLoggedInMail(null);
-                setLogInUser(null);
+                if (loggedInUser) {
+                    console.log("User logged out");
+                    setLoggedInMail(null);
+                    setLoggedInUser(null);
+                }
             }
         });
-
+    
         return () => {
             unsubscribe();
         };
-    }, [loggedInMail,logInUser]);
+    }, [loggedInUser, loggedInMail]);
+    
 
     const value = {
         createClassDialog,
@@ -39,8 +87,9 @@ export function ContextProvider({ children }) {
         joinClassDialog,
         setJoinClassDialog,
         login,
-        logInUser,
-        setLogInUser,
+        logout,
+        loggedInUser,
+        setLoggedInUser,
         loggedInMail,
         setLoggedInMail,
     };

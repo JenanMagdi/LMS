@@ -8,12 +8,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChalkboardUser } from "@fortawesome/sharp-light-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { CustomUseContext } from "../context/context";
 // import logoV from "../assets/Logo - V.svg";
 const SideBar = () => {
   const navigate = useNavigate();
-  const handleLogout = () => {
-    navigate("/");
-  };
+  const {logout} = CustomUseContext();    
+
   return (
     <div className="  bg-white h-full px-3  flex flex-col ">
       <p className="font-bold text-md text-geant-gray-400 p-3 ">EduConnect</p>
@@ -46,7 +46,7 @@ const SideBar = () => {
         <hr />
         <p className="font-bold text-sm text-geant-gray-200 p-2 ">Account</p>
         <button
-          onClick={handleLogout}
+          onClick={()=>logout()}
           className="border border-geant-gray-100 hover:bg-geant-red-700 text-red-500
         font-bold py-1.5 w-full rounded-lg *:mr-2 mb-6 "
         >
