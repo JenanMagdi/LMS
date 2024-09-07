@@ -1,9 +1,10 @@
 import { onAuthStateChanged } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CustomUseContext } from "../context/context";
 import { auth, db } from "../lib/Firebase";
+import ClassAnnouncements from "./Classes/ClassAnnouncements";
 
 function ClassDetails() {
   const { classId } = useParams();
@@ -12,7 +13,6 @@ function ClassDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchClassData = async () => {
@@ -24,19 +24,19 @@ function ClassDetails() {
           return;
         }
 
-        // أولاً جلب بيانات الفصول التي أنشأها المستخدم
+        // Fetch class from CreatedClasses first
         const createdClassRef = doc(db, "CreatedClasses", userEmail, "classes", classId);
         const createdClassDoc = await getDoc(createdClassRef);
 
         if (createdClassDoc.exists()) {
-          setClassData(createdClassDoc.data());
+          setClassData({ ...createdClassDoc.data(), isCreator: true });
         } else {
-          // إذا لم يكن الفصل في CreatedClasses، ابحث في JoinedClasses
+          // Fetch class from JoinedClasses if not found in CreatedClasses
           const joinedClassRef = doc(db, "JoinedClasses", userEmail, "classes", classId);
           const joinedClassDoc = await getDoc(joinedClassRef);
 
           if (joinedClassDoc.exists()) {
-            setClassData(joinedClassDoc.data());
+            setClassData({ ...joinedClassDoc.data(), isCreator: false });
           } else {
             setError("Class not found.");
           }
@@ -62,6 +62,35 @@ function ClassDetails() {
     return () => unsubscribe();
   }, [classId, loggedInUser, setLoggedInUser, loggedInMail]);
 
+  const handleDeleteClass = async () => {
+    try {
+      if (classData.isCreator) {
+        // User is the creator, delete the class from all users
+        const classRef = doc(db, "CreatedClasses", loggedInMail, "classes", classId);
+        await deleteDoc(classRef);
+
+        // Remove the class from all joined users
+        const q = query(collection(db, "JoinedClasses"), where("classId", "==", classId));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach(async (docSnapshot) => {
+          await deleteDoc(doc(db, "JoinedClasses", docSnapshot.id, "classes", classId));
+        });
+
+        console.log("Class deleted for all users.");
+      } else {
+        // User joined the class, remove only for the user
+        const joinedClassRef = doc(db, "JoinedClasses", loggedInMail, "classes", classId);
+        await deleteDoc(joinedClassRef);
+        console.log("You have left the class.");
+      }
+
+      // Redirect to the home page after deletion
+      navigate("/home");
+    } catch (error) {
+      console.error("Error deleting class:", error);
+    }
+  };
+
   if (loading) return <div>Loading...</div>;
 
   if (error) return <div>{error}</div>;
@@ -81,13 +110,26 @@ function ClassDetails() {
         <p className="text-gray-600 mb-4">
           <strong>Section:</strong> {classData.section}
         </p>
-        <div className="mt-4 flex justify-end">
-        <button
-        onClick={() => navigate(`/edit-class/${classId}`)}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-  Edit Class
-</button>
+
+
+
+
+      <ClassAnnouncements classId={classId} />
+
+
+        <div className="mt-4 flex justify-end space-x-4">
+          <button
+            onClick={() => navigate(`/edit-class/${classId}`)}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Edit Class
+          </button>
+          <button
+            onClick={handleDeleteClass}
+            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+          >
+            {classData.isCreator ? "Delete Class" : "Leave Class"}
+          </button>
         </div>
       </div>
     </div>

@@ -5,6 +5,7 @@ import Assignments from "../pages/Assignments";
 import EditClass from "../pages/EditClass";
 import Home from "../pages/Home";
 import Homeworks from "../pages/Homeworks";
+import Landing from "../pages/Landing";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
@@ -27,8 +28,8 @@ const Router = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Landing/>} />
+      <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/*" element={<NotFound />} />
         <Route path="/notfound" element={<NotFound />} />
