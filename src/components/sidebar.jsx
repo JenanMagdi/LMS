@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChalkboardUser } from "@fortawesome/sharp-light-svg-icons";
+import { faAddressCard } from "@fortawesome/sharp-thin-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { CustomUseContext } from "../context/context";
 // import logoV from "../assets/Logo - V.svg";
@@ -51,6 +52,11 @@ const SideBar = () => {
         </li>
         <hr />
         <p className="font-bold text-sm text-geant-gray-200 p-2 ">Account</p>
+        <li onClick={() => navigate("/Profile")}
+         className=" pl-3 *:pr-2 text-geant-gray-600 mb-1">
+        <FontAwesomeIcon icon={faAddressCard} /> 
+        Profile
+        </li>
         <button
           onClick={()=>logout()}
           className="border border-geant-gray-100 hover:bg-geant-red-700 text-red-500

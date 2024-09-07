@@ -14,10 +14,11 @@ export function CustomUseContext() {
 export function ContextProvider({ children }) {
   const [createClassDialog, setCreateClassDialog] = useState(false);
   const [joinClassDialog, setJoinClassDialog] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [loggedInMail, setLoggedInMail] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(() => JSON.parse(sessionStorage.getItem("user")) || null);
+  const [loggedInMail, setLoggedInMail] = useState(() => sessionStorage.getItem("userEmail") || null);
   const [createdClasses, setCreatedClasses] = useState([]);
   const [joinedClasses, setJoinedClasses] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
 
   const login = () => {
@@ -26,8 +27,15 @@ export function ContextProvider({ children }) {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential.accessToken;
         sessionStorage.setItem("token", token);
-        setLoggedInUser(result.user);
-        setLoggedInMail(result.user.providerData[0].email);
+
+        const user = result.user;
+        setLoggedInUser(user);
+        setLoggedInMail(user.providerData[0].email);
+
+        // تخزين المستخدم والبريد الإلكتروني في sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("userEmail", user.providerData[0].email);
+        
         navigate("/home");
       })
       .catch((error) => {
@@ -41,6 +49,8 @@ export function ContextProvider({ children }) {
         setLoggedInMail(null);
         setLoggedInUser(null);
         sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("userEmail");
         navigate("/notfound");
       })
       .catch((error) => {
@@ -54,44 +64,57 @@ export function ContextProvider({ children }) {
         if (loggedInUser?.uid !== authUser.uid) {
           setLoggedInMail(authUser.providerData[0].email);
           setLoggedInUser(authUser);
+
+          // تخزين المستخدم والبريد الإلكتروني في sessionStorage
+          sessionStorage.setItem("user", JSON.stringify(authUser));
+          sessionStorage.setItem("userEmail", authUser.providerData[0].email);
         }
       } else {
-        if (loggedInUser) {
-          setLoggedInMail(null);
-          setLoggedInUser(null);
-        }
+        setLoggedInMail(null);
+        setLoggedInUser(null);
+        sessionStorage.removeItem("user");
+        sessionStorage.removeItem("userEmail");
       }
     });
 
-    return () => unsubscribe(); // Ensure unsubscribe is called
+    return () => unsubscribe();
   }, [loggedInUser]);
 
   useEffect(() => {
     if (loggedInMail) {
       const unsubscribe = onSnapshot(
-        collection(db, 'CreatedClasses', loggedInMail, 'classes'),
+        collection(db, "CreatedClasses", loggedInMail, "classes"),
         (snapshot) => {
           setCreatedClasses(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
         }
       );
-      return () => unsubscribe(); // Ensure unsubscribe is called
+      return () => unsubscribe();
     }
   }, [loggedInMail]);
 
   useEffect(() => {
     if (loggedInMail) {
       const unsubscribe = onSnapshot(
-        collection(db, 'JoinedClasses', loggedInMail, 'classes'),
+        collection(db, "JoinedClasses", loggedInMail, "classes"),
         (snapshot) => {
-          const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-          console.log('Updated Joined Classes Data:', data);
-          setJoinedClasses(data);
+          setJoinedClasses(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
         }
       );
-      return () => unsubscribe(); // Ensure unsubscribe is called
+      return () => unsubscribe();
     }
   }, [loggedInMail]);
-  
+
+  useEffect(() => {
+    if (loggedInMail) {
+      const unsubscribe = onSnapshot(
+        collection(db, "Users", loggedInMail, "notifications"),
+        (snapshot) => {
+          setNotifications(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        }
+      );
+      return () => unsubscribe();
+    }
+  }, [loggedInMail]);
 
   const value = {
     createClassDialog,
@@ -108,6 +131,8 @@ export function ContextProvider({ children }) {
     joinedClasses,
     setCreatedClasses,
     createdClasses,
+    notifications,
+    setNotifications,
   };
 
   return <AddContext.Provider value={value}>{children}</AddContext.Provider>;

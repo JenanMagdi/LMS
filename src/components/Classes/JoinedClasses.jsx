@@ -1,12 +1,17 @@
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { CustomUseContext } from '../../context/context';
 
 function JoinedClasses() {
   const { createdClasses, joinedClasses } = CustomUseContext();
   const allClasses = [...createdClasses, ...joinedClasses];
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleViewDetails = (classId) => {
+    navigate(`/class/${classId}`); // Navigate to the detailed view page with the class ID
+  };
 
   return (
-    <div className="p-5 bg-gradient-to-t 
-    from-white to-blue-100 rounded-lg shadow-lg min-h-screen">
+    <div className="p-5 bg-gradient-to-t from-white to-blue-100 rounded-lg shadow-lg min-h-screen">
       <h1 className="text-5xl font-bold text-center text-blue-700 mb-10">Your Classes</h1>
       <div className="container mx-auto px-4">
         {allClasses.length > 0 ? (
@@ -25,7 +30,7 @@ function JoinedClasses() {
                     {classItem.subject}
                   </span>
                   <button
-                    onClick={() => alert(`Class ID: ${classItem.id}`)} // Replace with desired action
+                    onClick={() => handleViewDetails(classItem.id)} // Update onClick to navigate
                     className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
                   >
                     View Details

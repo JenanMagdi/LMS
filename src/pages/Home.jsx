@@ -1,7 +1,7 @@
-import AddButton from '../components/Class/AddButton';
-import CreateClass from "../components/class/CreateClass";
-import JoinClass from '../components/Class/JoinClass';
-import JoinedClasses from '../components/Class/JoinedClasses';
+import AddButton from "../components/Classes/AddButton";
+import CreateClass from "../components/Classes/CreateClass";
+import JoinClass from '../components/Classes/JoinClass';
+import JoinedClasses from '../components/Classes/JoinedClasses';
 
 const Home = () => {
 

@@ -3,12 +3,6 @@ import SideBar from './components/sidebar';
 import Router from './Router/Router';
 
 function App() {
-  // const {
-  //   // loggedInMail,
-  //   createdClasses,
-  //   joinedClasses,
-  // } = CustomUseContext();
-
   return (
     <div className="font-roboto bg-gray-50">
       <NavBar />

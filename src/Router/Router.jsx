@@ -1,11 +1,14 @@
 import PropTypes from "prop-types";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { default as ClassDetails } from "../components/ClassDetails";
 import Assignments from "../pages/Assignments";
-import Classes from "../pages/Classes";
+import EditClass from "../pages/EditClass";
 import Home from "../pages/Home";
 import Homeworks from "../pages/Homeworks";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
+import Notifications from "../pages/Notifications";
+import Profile from "../pages/Profile";
 import Quizzes from "../pages/Quizes";
 import Signup from "../pages/Signup";
 
@@ -35,6 +38,16 @@ const Router = () => {
             <Home  />
           </ProtectedRoute>
         } />
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/notifications" element={
+          <ProtectedRoute>
+            <Notifications />
+          </ProtectedRoute>
+        } />
         <Route path="/homeworks" element={
           <ProtectedRoute>
             <Homeworks />
@@ -52,7 +65,17 @@ const Router = () => {
         } />
         <Route path="/classes" element={
           <ProtectedRoute>
-            <Classes />
+            <Home />
+          </ProtectedRoute>
+        } />
+        <Route path="/class/:classId" element={
+          <ProtectedRoute>
+            <ClassDetails />
+          </ProtectedRoute>
+        } />
+         <Route path="/edit-class/:classId" element={
+          <ProtectedRoute>
+            <EditClass />
           </ProtectedRoute>
         } />
       </Routes>

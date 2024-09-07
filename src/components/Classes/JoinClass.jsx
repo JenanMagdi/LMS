@@ -5,6 +5,7 @@ import { Avatar } from "flowbite-react";
 import React, { useState } from "react";
 import { CustomUseContext } from "../../context/context";
 import { db } from "../../lib/Firebase";
+import { createNotification } from '../../lib/notifications';
 
 const Transaction = React.forwardRef(function Transaction(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -35,16 +36,27 @@ function JoinClass() {
         if (classData.owner !== loggedInUser.providerData[0].email) {
           setJoinedData(classData);
           setError(false);
+   
   
           if (loggedInUser && loggedInUser.providerData[0].email) {
             const joinedClassRef = doc(db, "JoinedClasses", loggedInUser.providerData[0].email, "classes", classCode);
             await setDoc(joinedClassRef, classData);
   
+           
+
+            
             // Update the joinedClasses state in Context
             const joinedClassesQuerySnapshot = await getDocs(collection(db, 'JoinedClasses', loggedInUser.providerData[0].email, 'classes'));
             const joinedClassesData = joinedClassesQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setJoinedClasses(joinedClassesData);
   
+
+            await createNotification(
+              classData.owner,
+              `${loggedInUser.displayName} has joined your class ${classData.className}.`,
+              loggedInUser.displayName,
+              loggedInUser.photoURL
+            );
             console.log("Class successfully added to JoinedClasses.");
             setJoinClassDialog(false);
           } else {
