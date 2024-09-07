@@ -1,7 +1,7 @@
 import { Checkbox, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useState } from 'react';
-import Form from '../components/Form';
-import { CustomUseContext } from '../context/context';
+import { CustomUseContext } from '../../context/context';
+import Form from '../Class/Form';
 
 const CreateClass = () => {
   const { createClassDialog, setCreateClassDialog } = CustomUseContext();
@@ -14,7 +14,8 @@ const CreateClass = () => {
         onClose={() => setCreateClassDialog(false)}
         open={createClassDialog}
         fullWidth
-        maxWidth="sm"  // ضبط حجم النافذة
+        maxWidth="sm" 
+        
       >
         {showForm ? (
           <div  >

@@ -1,6 +1,6 @@
 import { faPlus } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CustomUseContext } from "../context/context";
+import { CustomUseContext } from "../../context/context";
 
 const AddButton = () => {
   const { createClassDialog, setCreateClassDialog } = CustomUseContext();

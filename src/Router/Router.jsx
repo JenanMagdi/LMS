@@ -1,38 +1,38 @@
 import PropTypes from "prop-types";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { CustomUseContext } from "../context/context";
 import Assignments from "../pages/Assignments";
 import Classes from "../pages/Classes";
 import Home from "../pages/Home";
 import Homeworks from "../pages/Homeworks";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
-import Quizes from "../pages/quizes";
+import Quizzes from "../pages/Quizes";
+import Signup from "../pages/Signup";
 
 const ProtectedRoute = ({ children }) => {
-  // const token = localStorage.getItem('token');
-  const { loggedInUser } = CustomUseContext();
-  if (!loggedInUser) {
-    // if (!token) {
+  const token = sessionStorage.getItem('token');
+  if (!token) {
     return <Navigate to="/login" replace />;
   }
   return children;
 };
+
 ProtectedRoute.propTypes = {
   children: PropTypes.node.isRequired,
 };
+
 const Router = () => {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/*" element={<NotFound />} />
-        <Route path="/notfound" element={<NotFound />} />    
+        <Route path="/notfound" element={<NotFound />} />
         <Route path="/home" element={
           <ProtectedRoute>
-            <Home />
+            <Home  />
           </ProtectedRoute>
         } />
         <Route path="/homeworks" element={
@@ -45,9 +45,9 @@ const Router = () => {
             <Assignments />
           </ProtectedRoute>
         } />
-        <Route path="/quizes" element={
+        <Route path="/quizzes" element={
           <ProtectedRoute>
-            <Quizes />
+            <Quizzes />
           </ProtectedRoute>
         } />
         <Route path="/classes" element={
@@ -59,5 +59,6 @@ const Router = () => {
     </div>
   );
 };
+ 
 
 export default Router;

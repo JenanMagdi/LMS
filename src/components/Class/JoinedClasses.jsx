@@ -1,0 +1,47 @@
+import { CustomUseContext } from '../../context/context';
+
+function JoinedClasses() {
+  const { createdClasses, joinedClasses } = CustomUseContext();
+  const allClasses = [...createdClasses, ...joinedClasses];
+
+  return (
+    <div className="p-5 bg-gradient-to-t 
+    from-white to-blue-100 rounded-lg shadow-lg min-h-screen">
+      <h1 className="text-5xl font-bold text-center text-blue-700 mb-10">Your Classes</h1>
+      <div className="container mx-auto px-4">
+        {allClasses.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {allClasses.map((classItem) => (
+              <div
+                key={classItem.id}
+                className="bg-white shadow-lg rounded-lg border border-gray-300 p-6 flex flex-col justify-between"
+              >
+                <div>
+                  <h2 className="text-3xl font-semibold text-indigo-800">{classItem.className}</h2>
+                  <p className="text-gray-600 mt-2 text-sm">{classItem.description || 'No description available'}</p>
+                </div>
+                <div className="mt-4 flex items-center justify-between">
+                  <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-indigo-500 rounded-full">
+                    {classItem.subject}
+                  </span>
+                  <button
+                    onClick={() => alert(`Class ID: ${classItem.id}`)} // Replace with desired action
+                    className="text-indigo-600 hover:text-indigo-800 font-medium text-sm"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-600">
+            <p className="text-lg">You have not joined or created any classes yet.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default JoinedClasses;
