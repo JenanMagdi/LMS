@@ -7,7 +7,6 @@ import Home from "../pages/Home";
 import Homeworks from "../pages/Homeworks";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
-import Notifications from "../pages/Notifications";
 import Profile from "../pages/Profile";
 import Quizzes from "../pages/Quizes";
 import Signup from "../pages/Signup";
@@ -43,11 +42,11 @@ const Router = () => {
             <Profile />
           </ProtectedRoute>
         } />
-        <Route path="/notifications" element={
+        {/* <Route path="/notifications" element={
           <ProtectedRoute>
             <Notifications />
           </ProtectedRoute>
-        } />
+        } /> */}
         <Route path="/homeworks" element={
           <ProtectedRoute>
             <Homeworks />

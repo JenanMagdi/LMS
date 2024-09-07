@@ -11,15 +11,18 @@ const Transaction = React.forwardRef(function Transaction(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+
 function JoinClass() {
-  const { joinClassDialog, setJoinClassDialog, loggedInUser, logout, setJoinedClasses 
-   } = CustomUseContext();
+  const { joinClassDialog, setJoinClassDialog, loggedInUser, logout, setJoinedClasses  } = CustomUseContext();
 
   const [classCode, setClassCode] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [joinedData, setJoinedData] = useState(null);
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !classCode) {
@@ -41,15 +44,11 @@ function JoinClass() {
           if (loggedInUser && loggedInUser.providerData[0].email) {
             const joinedClassRef = doc(db, "JoinedClasses", loggedInUser.providerData[0].email, "classes", classCode);
             await setDoc(joinedClassRef, classData);
-  
-           
 
-            
             // Update the joinedClasses state in Context
             const joinedClassesQuerySnapshot = await getDocs(collection(db, 'JoinedClasses', loggedInUser.providerData[0].email, 'classes'));
             const joinedClassesData = joinedClassesQuerySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setJoinedClasses(joinedClassesData);
-  
 
             await createNotification(
               classData.owner,
@@ -76,63 +75,9 @@ function JoinClass() {
       setError(true);
     }
   };
-  
-  
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();  
-  //   if (!email || !classCode || email === undefined || classCode === undefined) {
-  //     console.error("Class code or email is undefined.");
-  //     setError(true);
-  //     return;
-  //   }
-  //   try {
-  //     console.log("Attempting to access document path: CreatedClasses/" + email + "/classes/" + classCode);
-  //       const classRef = doc(db, "CreatedClasses", email, "classes", classCode);
-  //       const classDoc = await getDoc(classRef);
-  
-  //     if (classDoc.exists()) {
-  //       const classData = classDoc.data();
-  //       console.log(classData);
-        
-  //       //insure the user iis not the class creator
-  //      if (classData.owner !== loggedInUser.providerData[0].email) {
-  //         setJoinedData(classData);
-  //         setError(false);
-  
-
-  //         if (loggedInUser && loggedInUser.providerData[0].email) {
-  //           const joinedClassRef = doc(db, "JoinedClasses", loggedInUser.providerData[0].email, "classes", classCode);
-  //           await setDoc(joinedClassRef, classData);
-  //           console.log("Class successfully added to JoinedClasses.");
-  //           setJoinClassDialog(false);
-  //         } else {
-  //           console.error("Error: loggedInUser.email is null or undefined.");
-  //           setError(true);
-  //         }
-  //         const joinedClassRef = doc(db, "JoinedClasses",loggedInUser.providerData[0].email, "classes", classCode);
-  //         await setDoc(joinedClassRef, classData);
-  
-  //         console.log("Class successfully added to JoinedClasses.");
-  //         setJoinClassDialog(false);
-  //       } else {
-  //         console.error("You cannot join a class that you own.");
-  //         setError(true);
-  //       }
-  
-  //     } else {
-  //       console.error("Class not found.");
-  //       setError(true);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error joining class:", error);
-  //     setError(true);
-  //   }
-  // };
-  
   return (
     <div>
-      <Dialog
-        fullScreen
+      <Dialog 
         open={joinClassDialog}
         onClose={() => setJoinClassDialog(false)}
         TransitionComponent={Transaction}
@@ -140,7 +85,7 @@ function JoinClass() {
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-6">
           {/* Header */}
           <div className="flex items-center justify-between w-full mb-6">
-            <h2 className="text-2xl font-semibold">Join Class</h2>
+            <p className="text-2xl font-semibold">Join Class</p>
             <Close className="cursor-pointer" onClick={() => setJoinClassDialog(false)} />
           </div>
 

@@ -14,7 +14,6 @@ const firebaseConfig = {
   measurementId: "G-EKHGHMVXQ3"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -25,6 +24,3 @@ provider.setCustomParameters({
 });
 
 export { app, auth, db, provider, storage };
-
-// lmsystem-27bd8-default-rtdb.firebaseio.com/
-// Mq4tKBHNtQphxALvPeyd8cV2znpfNdqRgE9PL2QT

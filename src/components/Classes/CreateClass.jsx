@@ -15,14 +15,13 @@ const CreateClass = () => {
         open={createClassDialog}
         fullWidth
         maxWidth="sm" 
-        
       >
         {showForm ? (
           <div  >
             <Form />
           </div>
         ) : (
-          <div className="p-6 bg-white rounded-md shadow-lg">
+          <div className="p-6 bg-white rounded-md shadow-md">
             <DialogContent>
               <p className="font-bold text-2xl text-center mb-4">Welcome to EduConnect!</p>
               <p className="text-gray-700 mb-2">Want to create a class? Here is what you need to know:</p>
@@ -32,7 +31,7 @@ const CreateClass = () => {
                 <p className="text-sm text-gray-600">I agree to the terms and conditions.</p>
               </div>
             </DialogContent>
-            <DialogActions className="justify-end space-x-2">
+            <DialogActions className="justify-start space-x-2">
               <button
                 className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition"
                 onClick={() => setCreateClassDialog(false)}

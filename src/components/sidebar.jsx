@@ -15,6 +15,8 @@ import { CustomUseContext } from "../context/context";
 const SideBar = () => {
   const navigate = useNavigate();
   const {logout} = CustomUseContext();    
+  const token = sessionStorage.getItem("token");
+  if (token === null || token === undefined || token === "") return <></>;
 
   return (
     <div className="  bg-white h-full px-3  flex flex-col ">
@@ -42,7 +44,7 @@ const SideBar = () => {
         </li>
       
       </div>
-      <div className=" list-none flex flex-col h-96 pb-10 justify-end *:cursor-pointer">
+      <div className=" list-none flex flex-col h-96 pb-10 justify-end  *:cursor-pointer">
         <li
           onClick={() => navigate("/")}
           className=" pl-3 *:pr-2 text-geant-gray-600 mb-1"
@@ -53,13 +55,13 @@ const SideBar = () => {
         <hr />
         <p className="font-bold text-sm text-geant-gray-200 p-2 ">Account</p>
         <li onClick={() => navigate("/Profile")}
-         className=" pl-3 *:pr-2 text-geant-gray-600 mb-1">
+         className=" pl-3 *:pr-2 text-geant-gray-600 mb-3">
         <FontAwesomeIcon icon={faAddressCard} /> 
         Profile
         </li>
         <button
           onClick={()=>logout()}
-          className="border border-geant-gray-100 hover:bg-geant-red-700 text-red-500
+          className="border border-geant-gray-100 hover:bg-red-500 hover:text-white text-red-500
         font-bold py-1.5 w-full rounded-lg *:mr-2 mb-6 "
         >
           <FontAwesomeIcon icon={faArrowLeftFromBracket} />

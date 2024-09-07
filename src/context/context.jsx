@@ -4,6 +4,8 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db, provider } from "../lib/Firebase";
 
+
+
 const AddContext = createContext();
 
 export function CustomUseContext() {
@@ -45,7 +47,7 @@ export function ContextProvider({ children }) {
 
   const logout = () => {
     auth.signOut()
-      .then(() => {
+    .then(() => {
         setLoggedInMail(null);
         setLoggedInUser(null);
         sessionStorage.removeItem("token");
@@ -76,7 +78,6 @@ export function ContextProvider({ children }) {
         sessionStorage.removeItem("userEmail");
       }
     });
-
     return () => unsubscribe();
   }, [loggedInUser]);
 
@@ -135,5 +136,7 @@ export function ContextProvider({ children }) {
     setNotifications,
   };
 
-  return <AddContext.Provider value={value}>{children}</AddContext.Provider>;
+  return <AddContext.Provider value={value}>
+  {children}
+  </AddContext.Provider>;
 }

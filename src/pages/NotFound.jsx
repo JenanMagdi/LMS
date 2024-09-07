@@ -16,7 +16,7 @@ const NotFound = () => {
         font-bold py-1.5 w-full rounded-lg *:mr-2 mb-6 "
         >
           <FontAwesomeIcon icon={faArrowRightFromBracket} />
-          Logn
+          Login
         </button>
 
             <button

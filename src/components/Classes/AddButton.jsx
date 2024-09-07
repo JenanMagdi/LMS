@@ -3,11 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CustomUseContext } from "../../context/context";
 
 const AddButton = () => {
-  const { createClassDialog, setCreateClassDialog } = CustomUseContext();
-  const { joinClassDialog, setJoinClassDialog } = CustomUseContext();
-
+  const { createClassDialog, setCreateClassDialog,joinClassDialog, setJoinClassDialog } = CustomUseContext();
   return (
-    <div className="fixed top-16 right-6 group ">
+    <div className="fixed top-16 right-2 group ">
       <button
         type="button"
         className="flex items-center justify-center text-white bg-blue-700 hover:bg-blue-800 rounded-full w-10 h-10"

@@ -4,17 +4,14 @@ import JoinClass from '../components/Classes/JoinClass';
 import JoinedClasses from '../components/Classes/JoinedClasses';
 
 const Home = () => {
-
-
-
   return (
     <div>
       <div>
         <AddButton />
       </div>
       <div className='flex flex-wrap gap-3'>
-        <CreateClass />
-        <JoinClass />
+        <CreateClass/>
+        <JoinClass/>
       </div>
       <JoinedClasses/>
     </div>
