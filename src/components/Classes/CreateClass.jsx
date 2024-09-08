@@ -12,9 +12,9 @@ const CreateClass = () => {
     <div>
       <Dialog
         onClose={() => setCreateClassDialog(false)}
-        open={createClassDialog}
+        open={createClassDialog} // Ensure this is set correctly
         fullWidth
-        maxWidth="sm" 
+        maxWidth="sm"
       >
         {showForm ? (
           <div>

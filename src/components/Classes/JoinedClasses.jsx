@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { CustomUseContext } from '../../context/context';
 
 function JoinedClasses() {
-  const { createdClasses, joinedClasses } = CustomUseContext();
+  const { createdClasses, joinedClasses, assignments, submissions, tests, announcements } = CustomUseContext();
   const allClasses = [...createdClasses, ...joinedClasses];
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -44,6 +44,63 @@ function JoinedClasses() {
             <p className="text-lg">You have not joined or created any classes yet.</p>
           </div>
         )}
+
+        {/* Add section for Assignments, Submissions, Tests, and Announcements */}
+        <div className="mt-10">
+          <h2 className="text-3xl font-bold text-blue-700">Assignments</h2>
+          {assignments.length > 0 ? (
+            assignments.map((assignment) => (
+              <div key={assignment.id} className="bg-gray-200 p-4 rounded-lg my-4">
+                <h3 className="text-lg font-bold">{assignment.title}</h3>
+                <p>{assignment.description}</p>
+              </div>
+            ))
+          ) : (
+            <p>No assignments available.</p>
+          )}
+        </div>
+
+        <div className="mt-10">
+          <h2 className="text-3xl font-bold text-blue-700">Submissions</h2>
+          {submissions.length > 0 ? (
+            submissions.map((submission) => (
+              <div key={submission.id} className="bg-gray-200 p-4 rounded-lg my-4">
+                <h3 className="text-lg font-bold">{submission.title}</h3>
+                <p>{submission.content}</p>
+              </div>
+            ))
+          ) : (
+            <p>No submissions available.</p>
+          )}
+        </div>
+
+        <div className="mt-10">
+          <h2 className="text-3xl font-bold text-blue-700">Tests</h2>
+          {tests.length > 0 ? (
+            tests.map((test) => (
+              <div key={test.id} className="bg-gray-200 p-4 rounded-lg my-4">
+                <h3 className="text-lg font-bold">{test.title}</h3>
+                <p>{test.description}</p>
+              </div>
+            ))
+          ) : (
+            <p>No tests available.</p>
+          )}
+        </div>
+
+        <div className="mt-10">
+          <h2 className="text-3xl font-bold text-blue-700">Announcements</h2>
+          {announcements.length > 0 ? (
+            announcements.map((announcement) => (
+              <div key={announcement.id} className="bg-gray-200 p-4 rounded-lg my-4">
+                <h3 className="text-lg font-bold">{announcement.title}</h3>
+                <p>{announcement.content}</p>
+              </div>
+            ))
+          ) : (
+            <p>No announcements available.</p>
+          )}
+        </div>
       </div>
     </div>
   );

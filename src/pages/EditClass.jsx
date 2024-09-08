@@ -10,7 +10,6 @@ function EditClass() {
   const [classData, setClassData] = useState({
     className: "",
     description: "",
-    subject: "",
     section: "",
   });
   const [loading, setLoading] = useState(true);
@@ -81,16 +80,6 @@ function EditClass() {
           <textarea
             name="description"
             value={classData.description}
-            onChange={handleInputChange}
-            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-600 font-semibold">Subject</label>
-          <input
-            type="text"
-            name="subject"
-            value={classData.subject}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
           />

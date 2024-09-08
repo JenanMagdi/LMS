@@ -17,6 +17,15 @@ export function ContextProvider({ children }) {
   const [createdClasses, setCreatedClasses] = useState([]);
   const [joinedClasses, setJoinedClasses] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [createClassDialog, setCreateClassDialog] = useState(false);
+  const [joinClassDialog, setJoinClassDialog] = useState(false);
+
+  // Add state for assignments, submissions, and tests
+  const [assignments, setAssignments] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [tests, setTests] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+
   const navigate = useNavigate();
 
   const login = async () => {
@@ -51,6 +60,7 @@ export function ContextProvider({ children }) {
     }
   };
 
+  // Monitor auth state changes
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
@@ -70,6 +80,7 @@ export function ContextProvider({ children }) {
     return () => unsubscribe();
   }, [loggedInUser]);
 
+  // Fetch created classes
   useEffect(() => {
     if (loggedInMail) {
       const unsubscribeCreated = onSnapshot(
@@ -82,6 +93,7 @@ export function ContextProvider({ children }) {
     }
   }, [loggedInMail]);
 
+  // Fetch joined classes
   useEffect(() => {
     if (loggedInMail) {
       const unsubscribeJoined = onSnapshot(
@@ -94,23 +106,47 @@ export function ContextProvider({ children }) {
     }
   }, [loggedInMail]);
 
+  // Fetch assignments, submissions, tests, and announcements
   useEffect(() => {
     if (loggedInMail) {
-      const unsubscribeNotifications = onSnapshot(
-        collection(db, "Users", loggedInMail, "notifications"),
+      const unsubscribeAssignments = onSnapshot(
+        collection(db, "Users", loggedInMail, "assignments"),
         (snapshot) => {
-          setNotifications(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+          setAssignments(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
         }
       );
-      return () => unsubscribeNotifications();
+
+      const unsubscribeSubmissions = onSnapshot(
+        collection(db, "Users", loggedInMail, "submissions"),
+        (snapshot) => {
+          setSubmissions(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        }
+      );
+
+      const unsubscribeTests = onSnapshot(
+        collection(db, "Users", loggedInMail, "tests"),
+        (snapshot) => {
+          setTests(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        }
+      );
+
+      const unsubscribeAnnouncements = onSnapshot(
+        collection(db, "Users", loggedInMail, "announcements"),
+        (snapshot) => {
+          setAnnouncements(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
+        }
+      );
+
+      return () => {
+        unsubscribeAssignments();
+        unsubscribeSubmissions();
+        unsubscribeTests();
+        unsubscribeAnnouncements();
+      };
     }
   }, [loggedInMail]);
 
   const value = {
-    createClassDialog: false,
-    setCreateClassDialog: () => {},
-    joinClassDialog: false,
-    setJoinClassDialog: () => {},
     login,
     logout,
     loggedInUser,
@@ -123,6 +159,15 @@ export function ContextProvider({ children }) {
     createdClasses,
     notifications,
     setNotifications,
+    createClassDialog,
+    setCreateClassDialog,
+    joinClassDialog,
+    setJoinClassDialog,
+    // Add new state variables for assignments, submissions, and tests
+    assignments,
+    submissions,
+    tests,
+    announcements
   };
 
   return <AddContext.Provider value={value}>{children}</AddContext.Provider>;

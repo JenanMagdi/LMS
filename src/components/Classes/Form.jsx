@@ -8,8 +8,6 @@ import { db } from '../../lib/Firebase';
 function Form() {
   const className = useRef(null);
   const section = useRef(null);
-  const subject = useRef(null);
-  const room = useRef(null);
   const { loggedInMail, setCreateClassDialog } = CustomUseContext();
 
   const addClass = async (e) => {
@@ -20,8 +18,6 @@ function Form() {
       owner: loggedInMail,
       className: className.current.value,
       section: section.current.value,
-      subject: subject.current.value,
-      room: room.current.value,
       id: id,
     };
 
@@ -54,26 +50,6 @@ function Form() {
             id="Section"
             className="h-10 rounded-lg border border-gray-300 w-full p-2 mt-1 focus:outline-none focus:border-blue-500"
             ref={section}
-          />
-        </div>
-
-        <div>
-          <label className="font-semibold">Subject</label>
-          <input
-            type="text"
-            id="Subject"
-            className="h-10 rounded-lg border border-gray-300 w-full p-2 mt-1 focus:outline-none focus:border-blue-500"
-            ref={subject}
-          />
-        </div>
-
-        <div>
-          <label className="font-semibold">Room</label>
-          <input
-            type="text"
-            id="Room"
-            className="h-10 rounded-lg border border-gray-300 w-full p-2 mt-1 focus:outline-none focus:border-blue-500"
-            ref={room}
           />
         </div>
       </div>
