@@ -23,5 +23,12 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: 'select_account'
 });
+auth.onAuthStateChanged(user => {
+  if (user) {
+    console.log("User is authenticated:", user);
+  } else {
+    console.log("No user is authenticated.");
+  }
+});
 
 export { app, auth, db, provider, storage };

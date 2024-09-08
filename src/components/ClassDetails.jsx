@@ -16,11 +16,11 @@ import { CustomUseContext } from "../context/context";
 import { auth, db } from "../lib/Firebase";
 import ClassAnnouncements from "./Classes/ClassAnnouncements";
 import ClassAssignments from "./Classes/ClassAssignments";
+import ClassHomeworks from "./Classes/ClassHomeworks";
 import ClassQuizzes from "./Classes/ClassQuizzes";
-import ClassTasks from "./Classes/ClassTasks";
 
 function ClassDetails() {
-  const { classId } = useParams();
+  const { classId , userId} = useParams();
   const { loggedInUser, setLoggedInUser, loggedInMail } = CustomUseContext();
   const [classData, setClassData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -154,7 +154,7 @@ function ClassDetails() {
                 icon={faInfoCircle}
               />
               {showDetails ? (
-                <div className="text-sm group bg-blue-100 rounded-lg p-2 absolute ">
+                <div className="text-sm   bg-blue-50 rounded-lg p-2 absolute ">
                   <p className="text-gray-600 mb-2">
                     <strong>Class Description:</strong>{" "}
                     {classData.description || "No description available"}
@@ -222,11 +222,11 @@ function ClassDetails() {
             </li>
             <li
               className={`inline-block p-4 cursor-pointer ${
-                activeTab === "tasks" ? "text-blue-600 border-b-2 border-blue-600" : ""
+                activeTab === "homeworks" ? "text-blue-600 border-b-2 border-blue-600" : ""
               }`}
-              onClick={() => setActiveTab("tasks")}
+              onClick={() => setActiveTab("homeworks")}
             >
-              Tasks
+              Homeworks
             </li>
           </ul>
 
@@ -236,27 +236,17 @@ function ClassDetails() {
               <ClassAnnouncements classId={classId} />
             )}
             {activeTab === "assignments" && (
-              <ClassAssignments classId={classId} isClassCreator={classData.isCreator} />
+              <ClassAssignments classId={classId} isClassCreator={classData.isCreator} userId={userId} />
             )}
             {activeTab === "quizzes" && (
               <ClassQuizzes classId={classId} isClassCreator={classData.isCreator} />
             )}
-            {activeTab === "tasks" && (
-              <ClassTasks classId={classId} isClassCreator={classData.isCreator} />
+            {activeTab === "homeworks" && (
+              <ClassHomeworks classId={classId} isClassCreator={classData.isCreator} />
             )}
           </div>
         </div>
       </div>
-      <button 
-      onClick={() => {
-        navigate(`/studentdashboard/${classId}`)
-        }}
-        >Student Dashboard</button>
-        <button
-        onClick={() => {
-          navigate(`/teacherdashboard/${classId}`)
-          }}
-          >Teacher Dashboard</button>
     </div>
   );
 }
