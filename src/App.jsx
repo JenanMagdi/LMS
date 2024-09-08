@@ -1,5 +1,5 @@
-import NavBar from './components/navbar';
-import SideBar from './components/sidebar';
+import NavBar from './components/NavBar';
+import SideBar from './components/SideBar';
 import Router from './Router/Router';
 
 function App() {
@@ -7,10 +7,10 @@ function App() {
     <div className="font-roboto bg-gray-50">
       <NavBar />
       <div className="flex">
-        <div className=""><SideBar /></div>
-        <div className="flex-1 m-5">
-          <Router/>
-        </div>
+        <SideBar />
+        <main className="flex-1 m-5">
+          <Router />
+        </main>
       </div>
     </div>
   );

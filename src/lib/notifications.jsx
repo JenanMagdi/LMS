@@ -1,6 +1,4 @@
-// src/firebase/notifications.ts
-
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from './Firebase';
 
 export async function createNotification(userEmail, message, senderName, senderPhotoURL) {
@@ -9,7 +7,7 @@ export async function createNotification(userEmail, message, senderName, senderP
       message,
       senderName,
       senderPhotoURL,
-      timestamp: new Date(),
+      timestamp: serverTimestamp(),
       read: false
     });
     console.log('Notification created successfully.');

@@ -2,8 +2,8 @@
 import { Avatar, Button, TextField } from '@mui/material';
 import { updateProfile } from 'firebase/auth';
 import { useState } from 'react';
+import Notifications from '../components/Notifications';
 import { CustomUseContext } from '../context/context';
-import Notifications from './Notifications';
 
 function Profile() {
   const { loggedInUser, setLoggedInUser ,loggedInMail } = CustomUseContext();

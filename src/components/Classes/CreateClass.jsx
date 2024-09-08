@@ -17,7 +17,7 @@ const CreateClass = () => {
         maxWidth="sm" 
       >
         {showForm ? (
-          <div  >
+          <div>
             <Form />
           </div>
         ) : (

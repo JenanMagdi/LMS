@@ -1,5 +1,3 @@
-// src/components/Notifications.tsx
-
 import { Avatar, Button } from '@mui/material';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -18,7 +16,7 @@ function Notifications() {
           setNotifications(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
         }
       );
-      return () => unsubscribe(); // Clean up the subscription
+      return () => unsubscribe();
     }
   }, [loggedInMail]);
 

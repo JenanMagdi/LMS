@@ -1,4 +1,3 @@
-// src/pages/EditClass.jsx
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,7 +5,7 @@ import { CustomUseContext } from "../context/context";
 import { db } from "../lib/Firebase";
 
 function EditClass() {
-  const { classId } = useParams(); // Get class ID from URL
+  const { classId } = useParams(); 
   const { loggedInMail } = CustomUseContext();
   const [classData, setClassData] = useState({
     className: "",
@@ -51,9 +50,9 @@ function EditClass() {
     e.preventDefault();
     try {
       const classRef = doc(db, "CreatedClasses", loggedInMail, "classes", classId);
-      await updateDoc(classRef, classData); // Update the class details
+      await updateDoc(classRef, classData);
       alert("Class details updated successfully!");
-      navigate(`/class-details/${classId}`); // Navigate back to class details page
+      navigate(`/class-details/${classId}`);
     } catch (err) {
       console.error("Error updating class:", err);
       setError("Error updating class details.");
