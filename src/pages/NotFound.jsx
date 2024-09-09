@@ -1,34 +1,11 @@
-import { faArrowLeftFromBracket } from "@fortawesome/pro-light-svg-icons";
-import { faArrowRightFromBracket } from "@fortawesome/pro-thin-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CustomUseContext } from "../context/context";
-
-const NotFound = () => {
-
-    const {login,logout} = CustomUseContext();    
-
-    return (
-        <div>
-            NotFound 
-            <button
-          onClick={()=>login()}
-          className="border border-geant-gray-100 hover:bg-geant-red-700 text-red-500
-        font-bold py-1.5 w-full rounded-lg *:mr-2 mb-6 "
-        >
-          <FontAwesomeIcon icon={faArrowRightFromBracket} />
-          Login
-        </button>
-
-            <button
-          onClick={()=>logout()}
-          className="border border-geant-gray-100 hover:bg-geant-red-700 text-red-500
-        font-bold py-1.5 w-full rounded-lg *:mr-2 mb-6 "
-        >
-          <FontAwesomeIcon icon={faArrowLeftFromBracket} />
-          Logout
-        </button>
-        </div>
-    );
+// src/pages/NotFound.js
+function NotFound() {
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">404 - Page Not Found</h1>
+      <p>The page you are looking for does not exist.</p>
+    </div>
+  );
 }
 
 export default NotFound;

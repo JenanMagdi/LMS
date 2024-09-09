@@ -7,7 +7,6 @@ import Landing from "../pages/Landing";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
-import Signup from "../pages/Signup";
 
 const ProtectedRoute = ({ children }) => {
   const token = sessionStorage.getItem('token');
@@ -27,7 +26,6 @@ const Router = () => {
       <Routes>
       <Route path="/" element={<Landing/>} />
       <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/*" element={<NotFound />} />
         <Route path="/notfound" element={<NotFound />} />
         <Route path="/home" element={
@@ -40,21 +38,6 @@ const Router = () => {
             <Profile />
           </ProtectedRoute>
         } />
-        {/* <Route path="/homeworks" element={
-          <ProtectedRoute>
-            <Homeworks />
-          </ProtectedRoute>
-        } />
-        <Route path="/assignments" element={
-          <ProtectedRoute>
-            <Assignments />
-          </ProtectedRoute>
-        } /> */}
-        {/* <Route path="/quizzes" element={
-          <ProtectedRoute>
-            <Quizzes />
-          </ProtectedRoute>
-        } /> */}
         <Route path="/classes" element={
           <ProtectedRoute>
             <Home />

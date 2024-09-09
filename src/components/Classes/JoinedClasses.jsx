@@ -2,7 +2,8 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import { CustomUseContext } from '../../context/context';
 
 function JoinedClasses() {
-  const { createdClasses, joinedClasses, assignments, submissions, tests, announcements } = CustomUseContext();
+  const { createdClasses, joinedClasses } = CustomUseContext();
+  // const {  assignments, submissions, tests, announcements} = CustomUseContext();
   const allClasses = [...createdClasses, ...joinedClasses];
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -45,7 +46,7 @@ function JoinedClasses() {
           </div>
         )}
 
-        {/* Add section for Assignments, Submissions, Tests, and Announcements */}
+        {/* Add section for Assignments, Submissions, Tests, and Announcements
         <div className="mt-10">
           <h2 className="text-3xl font-bold text-blue-700">Assignments</h2>
           {assignments.length > 0 ? (
@@ -100,7 +101,7 @@ function JoinedClasses() {
           ) : (
             <p>No announcements available.</p>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );
