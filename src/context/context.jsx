@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { collection, onSnapshot } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db, provider } from "../lib/Firebase";
@@ -14,19 +14,33 @@ export function CustomUseContext() {
 export function ContextProvider({ children }) {
   const [loggedInUser, setLoggedInUser] = useState(() => JSON.parse(sessionStorage.getItem("user")) || null);
   const [loggedInMail, setLoggedInMail] = useState(() => sessionStorage.getItem("userEmail") || null);
+  const [userRole, setUserRole] = useState(() => sessionStorage.getItem("userRole") || null);
   const [createdClasses, setCreatedClasses] = useState([]);
   const [joinedClasses, setJoinedClasses] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [createClassDialog, setCreateClassDialog] = useState(false);
   const [joinClassDialog, setJoinClassDialog] = useState(false);
 
-  // Add state for assignments, submissions, and tests
-  const [assignments, setAssignments] = useState([]);
-  const [submissions, setSubmissions] = useState([]);
-  const [tests, setTests] = useState([]);
-  const [announcements, setAnnouncements] = useState([]);
-
   const navigate = useNavigate();
+
+  // Function to set user role in Firestore
+  const storeUserRoleInFirestore = async (email, role) => {
+    try {
+      const userDoc = doc(db, "Users", email);
+      await setDoc(userDoc, { role }, { merge: true });
+    } catch (error) {
+      console.error("Error setting user role in Firestore:", error);
+    }
+  };
+
+  const determineUserRole = (email) => {
+    if (email.startsWith('itstd.')) {
+      return 'student';
+    } else if (email.endsWith('@uob.edu.ly')) {
+      return 'staff';
+    }
+    return 'unknown'; // Default to 'unknown' if email format is invalid
+  };
 
   const login = async () => {
     try {
@@ -36,12 +50,27 @@ export function ContextProvider({ children }) {
       sessionStorage.setItem("token", token);
 
       const user = result.user;
+      const email = user.providerData[0].email;
+      const role = determineUserRole(email);
+
+      if (role === 'unknown') {
+        // If role is unknown, sign out and show an alert
+        await signOut(auth);
+        alert('Unauthorized email. Please use a university email address.');
+        return;
+      }
+
+      // Set user role in Firestore
+      await storeUserRoleInFirestore(email, role);
+
       setLoggedInUser(user);
-      setLoggedInMail(user.providerData[0].email);
+      setLoggedInMail(email);
+      setUserRole(role);
 
       sessionStorage.setItem("user", JSON.stringify(user));
-      sessionStorage.setItem("userEmail", user.providerData[0].email);
-      
+      sessionStorage.setItem("userEmail", email);
+      sessionStorage.setItem("userRole", role);
+
       navigate("/home");
     } catch (error) {
       console.error("Login failed:", error.message);
@@ -53,98 +82,66 @@ export function ContextProvider({ children }) {
       await signOut(auth);
       setLoggedInMail(null);
       setLoggedInUser(null);
+      setUserRole(null);
       sessionStorage.clear();
-      navigate("/notfound");
+      navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
+      alert("Failed to log out. Please try again.")
     }
   };
-
+  useEffect(() => {
+    if (auth.currentUser) {
+      setLoggedInUser(auth.currentUser);
+    }
+  }, []);
+  
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log("User signed in: ", user);
+        // تعيين المستخدم في الحالة الخاصة بك
+        setLoggedInUser(user);
+      } else {
+        console.log("No user signed in");
+      }
+    });
+  
+    return () => unsubscribe();
+  }, []);
+  
   // Monitor auth state changes
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
+        const email = authUser.providerData[0].email;
+        const role = determineUserRole(email);
+
+        if (role === 'unknown') {
+          signOut(auth);
+          alert('Unauthorized email. Please use a university email address.');
+          return;
+        }
+
         if (loggedInUser?.uid !== authUser.uid) {
-          setLoggedInMail(authUser.providerData[0].email);
+          setLoggedInMail(email);
           setLoggedInUser(authUser);
+          setUserRole(role);
 
           sessionStorage.setItem("user", JSON.stringify(authUser));
-          sessionStorage.setItem("userEmail", authUser.providerData[0].email);
+          sessionStorage.setItem("userEmail", email);
+          sessionStorage.setItem("userRole", role);
         }
       } else {
         setLoggedInMail(null);
         setLoggedInUser(null);
+        setUserRole(null);
         sessionStorage.clear();
       }
     });
     return () => unsubscribe();
   }, [loggedInUser]);
 
-  // Fetch created classes
-  useEffect(() => {
-    if (loggedInMail) {
-      const unsubscribeCreated = onSnapshot(
-        collection(db, "CreatedClasses", loggedInMail, "classes"),
-        (snapshot) => {
-          setCreatedClasses(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-        }
-      );
-      return () => unsubscribeCreated();
-    }
-  }, [loggedInMail]);
-
-  // Fetch joined classes
-  useEffect(() => {
-    if (loggedInMail) {
-      const unsubscribeJoined = onSnapshot(
-        collection(db, "JoinedClasses", loggedInMail, "classes"),
-        (snapshot) => {
-          setJoinedClasses(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-        }
-      );
-      return () => unsubscribeJoined();
-    }
-  }, [loggedInMail]);
-
-  // Fetch assignments, submissions, tests, and announcements
-  useEffect(() => {
-    if (loggedInMail) {
-      const unsubscribeAssignments = onSnapshot(
-        collection(db, "Users", loggedInMail, "assignments"),
-        (snapshot) => {
-          setAssignments(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-        }
-      );
-
-      const unsubscribeSubmissions = onSnapshot(
-        collection(db, "Users", loggedInMail, "submissions"),
-        (snapshot) => {
-          setSubmissions(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-        }
-      );
-
-      const unsubscribeTests = onSnapshot(
-        collection(db, "Users", loggedInMail, "tests"),
-        (snapshot) => {
-          setTests(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-        }
-      );
-
-      const unsubscribeAnnouncements = onSnapshot(
-        collection(db, "Users", loggedInMail, "announcements"),
-        (snapshot) => {
-          setAnnouncements(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-        }
-      );
-
-      return () => {
-        unsubscribeAssignments();
-        unsubscribeSubmissions();
-        unsubscribeTests();
-        unsubscribeAnnouncements();
-      };
-    }
-  }, [loggedInMail]);
 
   const value = {
     login,
@@ -153,6 +150,8 @@ export function ContextProvider({ children }) {
     setLoggedInUser,
     loggedInMail,
     setLoggedInMail,
+    userRole,
+    setUserRole,
     setJoinedClasses,
     joinedClasses,
     setCreatedClasses,
@@ -163,11 +162,6 @@ export function ContextProvider({ children }) {
     setCreateClassDialog,
     joinClassDialog,
     setJoinClassDialog,
-    // Add new state variables for assignments, submissions, and tests
-    assignments,
-    submissions,
-    tests,
-    announcements
   };
 
   return <AddContext.Provider value={value}>{children}</AddContext.Provider>;

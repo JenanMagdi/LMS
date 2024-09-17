@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { default as ClassDetails } from "../components/ClassDetails";
+import { default as ClassDetails } from "../pages/ClassDetails";
 import EditClass from "../pages/EditClass";
 import Home from "../pages/Home";
 import Landing from "../pages/Landing";
@@ -36,11 +36,6 @@ const Router = () => {
         <Route path="/profile" element={
           <ProtectedRoute>
             <Profile />
-          </ProtectedRoute>
-        } />
-        <Route path="/classes" element={
-          <ProtectedRoute>
-            <Home />
           </ProtectedRoute>
         } />
         <Route path="/class/:classId" element={

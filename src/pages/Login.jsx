@@ -1,89 +1,30 @@
-import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { useState } from 'react';
- 
-import { useNavigate } from 'react-router-dom';
-import { auth } from '../lib/Firebase';
-function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isRegistering, setIsRegistering] = useState(false);
-  const navigate = useNavigate();  
-//   const handleLogout = () => {
-//     sessionStorage.removeItem('token');
-//     navigate('/login');
-//   };
-  const handleEmailAuth = async (e) => {
-    e.preventDefault();
-    const auth = getAuth();
-    try {
-      if (isRegistering) {
-        await createUserWithEmailAndPassword(auth, email, password);
-        
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
-      }
-      sessionStorage.setItem('token', auth.accessToken);  
-      navigate('/home'); 
-    } catch (error) {
-      console.error('Error during email login/registration:', error);
-      alert('Error: ' + error.message);
-    }
-  };
-  
-  const handleGoogleAuth = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-      alert('Logged in with Google successfully');
-      sessionStorage.setItem('token', auth.accessToken);  
-      navigate('/home'); // Redirect to home page after successful Google login
-    } catch (error) {
-      console.error('Google login failed:', error);
-      alert('Google login failed: ' + error.message);
-    }
-  };
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CustomUseContext } from "../context/context"; // استدعاء السياق
+
+const Login = () => {
+  const { login } = CustomUseContext(); // استخدام دالة تسجيل الدخول من السياق
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-4">
-      <h1 className="text-2xl font-bold mb-4">{isRegistering ? 'Register' : 'Login'}</h1>
-
-      <form className="flex flex-col space-y-4 w-full max-w-sm" onSubmit={handleEmailAuth}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="p-2 border border-gray-300 rounded"
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="p-2 border border-gray-300 rounded"
-          required
-        />
-        <button type="submit" className="p-2 bg-blue-500 text-white rounded">
-          {isRegistering ? 'Register' : 'Login'}
+    <div className="bg-gradient-to-t from-blue-200   to-blue-400 h-screen flex flex-col justify-center items-center relative overflow-hidden">
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+        <h1 className="text-3xl font-extrabold text-gray-800 mb-4">
+          Welcome to EduConnect
+        </h1>
+        <p className="text-gray-600 mb-6">
+          Sign in to connect with educators, access resources, and achieve your
+          learning goals.
+        </p>
+        <button
+          className="relative  bg-blue-600 text-white text-lg font-semibold py-3 px-8 rounded-lg shadow-md transition-all duration-700 ease-in-out transform hover:scale-110 hover:shadow-2xl hover:bg-blue-700   "
+          onClick={login}
+        >
+          <FontAwesomeIcon icon={faGoogle} className="text-lg mr-2" />
+          Login with Google
         </button>
-      </form>
-
-      <button
-        onClick={handleGoogleAuth}
-        className="mt-4 p-2 bg-red-500 text-white rounded"
-      >
-        Sign in with Google
-      </button>
-
-      <button
-        className="mt-2 text-blue-500 underline"
-        onClick={() => setIsRegistering(!isRegistering)}
-      >
-        {isRegistering ? 'Already have an account? Log in' : 'New here? Register'}
-      </button>
+      </div>
     </div>
   );
-}
+};
 
-export default LoginPage;
+export default Login;

@@ -3,7 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CustomUseContext } from "../../context/context";
 
 const AddButton = () => {
-  const { createClassDialog, setCreateClassDialog,joinClassDialog, setJoinClassDialog } = CustomUseContext();
+  const { createClassDialog, setCreateClassDialog, joinClassDialog, setJoinClassDialog, userRole } = CustomUseContext();
+  const isStaff = userRole === 'staff'
+
   return (
     <div className="fixed top-16 right-2 group ">
       <button
@@ -20,18 +22,20 @@ const AddButton = () => {
         <ul className=" dropdown-menu absolute right-0 z-10 w-28 bg-white rounded-lg shadow-md py-2 hidden group-hover:block">
           <li>
             <p className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
-              onClick={() => setJoinClassDialog(!joinClassDialog)}                          >
+              onClick={() => setJoinClassDialog(!joinClassDialog)} >
               Join Class
             </p>
           </li>
-          <li>
-            <p
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
-              onClick={() => setCreateClassDialog(!createClassDialog)}
-            >
-              Create Class
-            </p>
-          </li>
+          {isStaff && (
+            <li>
+              <p
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-300 ease-in-out cursor-pointer"
+                onClick={() => setCreateClassDialog(!createClassDialog)}
+              >
+                Create Class
+              </p>
+            </li>
+          )}
         </ul>
       </div>
     </div>

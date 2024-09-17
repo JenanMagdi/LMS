@@ -1,7 +1,7 @@
 import { Checkbox, Dialog, DialogActions, DialogContent } from '@mui/material';
 import { useState } from 'react';
 import { CustomUseContext } from '../../context/context';
-import Form from '../Classes/Form';
+import Form from './CreateForm';
 
 const CreateClass = () => {
   const { createClassDialog, setCreateClassDialog } = CustomUseContext();
