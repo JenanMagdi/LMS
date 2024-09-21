@@ -1,10 +1,8 @@
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CustomUseContext } from "../context/context"; // استدعاء السياق
-
+import { CustomUseContext } from "../context/context"; 
 const Login = () => {
-  const { login } = CustomUseContext(); // استخدام دالة تسجيل الدخول من السياق
-
+  const { login } = CustomUseContext();
   return (
     <div className="bg-gradient-to-t from-blue-200   to-blue-400 h-screen flex flex-col justify-center items-center relative overflow-hidden">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
@@ -17,8 +15,7 @@ const Login = () => {
         </p>
         <button
           className="relative  bg-blue-600 text-white text-lg font-semibold py-3 px-8 rounded-lg shadow-md transition-all duration-700 ease-in-out transform hover:scale-110 hover:shadow-2xl hover:bg-blue-700   "
-          onClick={login}
-        >
+          onClick={login}>
           <FontAwesomeIcon icon={faGoogle} className="text-lg mr-2" />
           Login with Google
         </button>
